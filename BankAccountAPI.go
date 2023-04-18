@@ -68,7 +68,7 @@ func WithdrawHandler(c *gin.Context) {
 func SendTransactionEmail(receiverEmail []string, typeoftransaction string, amount float64, balance float64) {
 	var to = receiverEmail
 	// Set up authentication information
-	auth := smtp.PlainAuth("", "kghosh@datopic.com", "Kr15h4nu", "smtp.gmail.com")
+	auth := smtp.PlainAuth("", "automatedmailserve@gmail.com", "lfxbspyfykcceylm", "smtp.gmail.com")
 
 	// Set up the message
 	from := "kghosh@datopic.com"
