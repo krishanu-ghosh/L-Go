@@ -45,7 +45,7 @@ func DepositHandler(c *gin.Context) {
 	} else {
 		Balance = Balance + transaction.Amount
 		c.JSON(http.StatusOK, Balance)
-		SendCreditedTransactionEmail([]string{"krishanughosh1512@gmail.com"}, transaction.Amount, Balance)
+		SendTransactionEmail([]string{"krishanughosh1512@gmail.com"}, "credited to", transaction.Amount, Balance)
 	}
 }
 
@@ -61,11 +61,11 @@ func WithdrawHandler(c *gin.Context) {
 	} else {
 		Balance = Balance - transaction.Amount
 		c.JSON(http.StatusOK, Balance)
-		SendDebitedTransactionEmail([]string{"krishanughosh1512@gmail.com"}, transaction.Amount, Balance)
+		SendTransactionEmail([]string{"krishanughosh1512@gmail.com"}, "debited from", transaction.Amount, Balance)
 	}
 }
 
-func SendCreditedTransactionEmail(receiverEmail []string, amount float64, balance float64) {
+func SendTransactionEmail(receiverEmail []string, typeoftransaction string, amount float64, balance float64) {
 	var to = receiverEmail
 	// Set up authentication information
 	auth := smtp.PlainAuth("", "kghosh@datopic.com", "Kr15h4nu", "smtp.gmail.com")
@@ -76,31 +76,7 @@ func SendCreditedTransactionEmail(receiverEmail []string, amount float64, balanc
 	message := fmt.Sprintf("To: %s\r\nSubject: %s\r\nFrom: %s\r\nMIME-version: 1.0\r\nContent-Type: text/html; charset=\"UTF-8\"\r\n\r\n", to, subject, from)
 
 	// Set up the HTML content.
-	html := fmt.Sprint("Amount of Rs ", amount, " has been credited to your account. Remaining A/C balance is Rs ", balance)
-	message += html
-
-	// Send the email via SMTP.
-	err := smtp.SendMail("smtp.gmail.com:587", auth, from, to, []byte(message))
-	if err != nil {
-		fmt.Println("Error sending email:", err)
-		return
-	}
-
-	fmt.Println("Transaction email sent to", to[0])
-}
-
-func SendDebitedTransactionEmail(receiverEmail []string, amount float64, balance float64) {
-	var to = receiverEmail
-	// Set up authentication information
-	auth := smtp.PlainAuth("", "kghosh@datopic.com", "Kr15h4nu", "smtp.gmail.com")
-
-	// Set up the message
-	from := "kghosh@datopic.com"
-	subject := "Transaction notification"
-	message := fmt.Sprintf("To: %s\r\nSubject: %s\r\nFrom: %s\r\nMIME-version: 1.0\r\nContent-Type: text/html; charset=\"UTF-8\"\r\n\r\n", to, subject, from)
-
-	// Set up the HTML content.
-	html := fmt.Sprint("Amount of Rs ", amount, " has been debited from your account. Remaining A/C balance is Rs ", balance)
+	html := fmt.Sprint("Amount of Rs ", amount, " has been ", typeoftransaction, " your account. Remaining A/C balance is Rs ", balance)
 	message += html
 
 	// Send the email via SMTP.
