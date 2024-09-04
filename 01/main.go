@@ -2,26 +2,26 @@ package main
 
 import "fmt"
 
-type person struct{
+type person struct {
 	firstname string
-	lastname string
-	age string
+	lastname  string
+	age       string
 }
 
-type pet struct{
+type pet struct {
 	name string
-	age string
+	age  string
 }
 
-func (p person) sound (){
-	fmt.Printf("%v says Hello\n",p.firstname)
+func (p person) sound() {
+	fmt.Printf("%v says Hello\n", p.firstname)
 }
 
-func (pe pet) sound(){
+func (pe pet) sound() {
 	fmt.Printf("%v says vow vow\n", pe.name)
 }
 
-type household interface{
+type household interface {
 	sound()
 }
 
@@ -31,17 +31,16 @@ func main() {
 	// fmt.Printf("%T", a)
 	p1 := person{
 		firstname: "James",
-		lastname: "Bond",
-		age: "34",
+		lastname:  "Bond",
+		age:       "34",
 	}
 
 	pe1 := pet{
 		name: "Escobar",
-		age: "7",
+		age:  "7",
 	}
 
 	p1.sound()
 	pe1.sound()
-
 
 }
